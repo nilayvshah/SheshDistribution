@@ -1,0 +1,1921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SZVS Jain Samaj - Shesh Distribution</title>
+<meta name="app-version" content="20260902-0200">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── VARIABLES ── */
+:root {
+  --navy:   #0f1f3d;
+  --navyL:  #1a3060;
+  --green:  #00c97a;
+  --greenD: #00a362;
+  --red:    #ff4757;
+  --amber:  #ffb300;
+  --purple: #7c3aed;
+  --purpleB:#f3f0ff;
+  --orange: #ff6b2b;
+  --teal:   #0891b2;
+  --tealB:  #f0f9ff;
+  --bg:     #edf1f7;
+  --card:   #ffffff;
+  --text:   #1a2540;
+  --muted:  #6b7a99;
+  --border: #dde3ee;
+  --mono:   'Space Mono', monospace;
+  --sans:   'DM Sans', sans-serif;
+  --r:      12px;
+  --sh:     0 2px 12px rgba(15,31,61,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;}
+
+/* ── PAGES ── */
+.page{display:none;height:100vh;flex-direction:column;overflow:hidden;}
+.page.active{display:flex;}
+
+/* ── LOADING OVERLAY ── */
+.load-ov{position:fixed;inset:0;background:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:9999;}
+.load-ov.h{display:none;}
+.load-icon{font-size:42px;}
+.load-txt{font-family:var(--mono);font-size:12px;color:rgba(255,255,255,0.6);letter-spacing:1px;}
+.load-bar{width:160px;height:3px;background:rgba(255,255,255,0.12);border-radius:10px;overflow:hidden;}
+.load-fill{height:100%;background:var(--green);border-radius:10px;animation:lp 1.4s ease-in-out infinite;}
+@keyframes lp{0%{width:5%}50%{width:85%}100%{width:100%}}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%) translateY(70px);background:var(--navy);color:#fff;padding:10px 18px;border-radius:28px;font-size:12px;font-weight:600;z-index:9999;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.2);max-width:92vw;text-align:center;}
+.toast.show   {transform:translateX(-50%) translateY(0);}
+.toast.success{background:var(--greenD);}
+.toast.error  {background:var(--red);}
+.toast.warning{background:var(--orange);}
+
+/* ── LOGIN PAGE ── */
+#page-login{background:var(--navy);align-items:center;justify-content:center;padding:24px 20px;}
+.login-logo{text-align:center;margin-bottom:28px;}
+.login-icon{width:66px;height:66px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.13);border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:28px;}
+.login-title{font-family:var(--mono);font-size:14px;color:#fff;letter-spacing:2px;text-transform:uppercase;}
+.login-sub  {font-size:11px;color:rgba(255,255,255,0.3);margin-top:3px;}
+.login-card {background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);border-radius:18px;padding:22px 20px;width:100%;max-width:320px;}
+.login-card .clabel{color:rgba(255,255,255,0.4);}
+.lin{width:100%;padding:12px 13px;border:2px solid rgba(255,255,255,0.14);border-radius:9px;font-size:15px;font-family:var(--sans);font-weight:500;color:#fff;background:rgba(255,255,255,0.08);outline:none;margin-bottom:12px;-webkit-appearance:none;display:block;}
+.lin:focus{border-color:var(--green);}
+.lin::placeholder{color:rgba(255,255,255,0.2);}
+.btn-login{width:100%;padding:14px;background:var(--green);border:none;border-radius:10px;font-family:var(--mono);font-size:13px;font-weight:700;color:#fff;letter-spacing:1.5px;cursor:pointer;text-transform:uppercase;margin-top:2px;box-shadow:0 4px 14px rgba(0,201,122,0.3);display:block;}
+.btn-login:active{background:var(--greenD);}
+.btn-login:disabled{background:#2a4a6a;cursor:not-allowed;box-shadow:none;}
+.login-err{color:#ff6b7a;font-size:12px;margin-top:9px;text-align:center;font-weight:600;min-height:18px;}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--navy);color:#fff;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,0.2);}
+.topbar-left{display:flex;flex-direction:column;gap:1px;}
+.topbar-title{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.topbar-user{font-size:10px;color:#7fa8d0;}
+.topbar-btns{display:flex;gap:6px;}
+.tbtn{background:rgba(255,255,255,0.1);border:none;color:#fff;padding:5px 10px;border-radius:7px;font-size:11px;font-family:var(--sans);font-weight:600;cursor:pointer;}
+.tbtn:active{background:rgba(255,255,255,0.22);}
+.tbtn.admin{background:rgba(255,179,0,0.25);color:var(--amber);}
+.admin-badge{background:rgba(255,179,0,0.15);color:var(--amber);border:1px solid rgba(255,179,0,0.3);border-radius:20px;padding:2px 8px;font-size:10px;font-weight:700;margin-left:6px;}
+
+/* ── ENTRY BODY ── */
+.entry-body{flex:1;display:flex;flex-direction:column;padding:10px 12px 8px;gap:8px;overflow:hidden;}
+
+/* ── SCROLLABLE CONTENT ── */
+.scroll-content{flex:1;overflow-y:auto;padding:12px;-webkit-overflow-scrolling:touch;}
+
+/* ── CARD ── */
+.c{background:var(--card);border-radius:var(--r);padding:10px 12px;box-shadow:var(--sh);flex-shrink:0;}
+.clabel{font-size:10px;font-weight:700;letter-spacing:0.7px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;display:block;}
+
+/* ── SCAN INPUT ROW ── */
+.scan-row{display:flex;gap:7px;align-items:center;}
+.scan-input{flex:1;padding:11px 13px;border:2px solid var(--border);border-radius:9px;font-size:17px;font-family:var(--sans);font-weight:600;color:var(--text);background:#fff;outline:none;transition:border-color 0.15s;-webkit-appearance:none;min-width:0;}
+.scan-input:focus{border-color:var(--navy);}
+.scan-input.err {border-color:var(--red)!important;}
+.scan-input.ok  {border-color:var(--green)!important;}
+.scan-input.warn{border-color:var(--orange)!important;}
+.scan-input.chk {border-color:var(--amber)!important;}
+.btn-clear{flex-shrink:0;width:44px;height:44px;border:2px solid var(--border);border-radius:9px;background:#fff;color:var(--muted);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;-webkit-appearance:none;}
+.btn-clear:active{background:var(--red);border-color:var(--red);color:#fff;transform:scale(0.92);}
+
+/* ── MEMBER RESULT ── */
+.mresult{margin-top:7px;display:none;animation:fadeIn 0.2s ease;}
+.mresult.show{display:block;}
+.mcard{padding:8px 10px;border-radius:9px;border:2px solid var(--green);background:linear-gradient(135deg,#edf9ff,#f0fff8);}
+.mcard.dup{border-color:var(--orange);background:linear-gradient(135deg,#fff4ef,#fff8f5);}
+.mcard.chk{border-color:var(--amber);background:#fffbf0;}
+.mcard.nf {border-color:var(--red);background:#fff5f5;}
+.mbadge{display:inline-block;background:var(--navy);color:#fff;font-family:var(--mono);font-size:10px;padding:1px 8px;border-radius:20px;margin-bottom:3px;}
+.mbadge.dup{background:var(--orange);}
+.mname{font-size:15px;font-weight:700;color:var(--navy);line-height:1.2;}
+.maddr{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mmeta{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px;}
+.mchip{background:rgba(15,31,61,0.07);border-radius:20px;padding:2px 8px;font-size:10px;font-weight:600;color:var(--navy);}
+.dup-row{margin-top:5px;padding:5px 8px;background:rgba(255,107,43,0.10);border-radius:7px;font-size:11px;color:var(--orange);font-weight:600;}
+.chk-row{margin-top:5px;font-size:11px;color:#997700;font-weight:600;}
+.nf-text{font-size:13px;font-weight:700;color:var(--red);}
+
+/* ── METHOD TOGGLE ── */
+.method-toggle{display:flex;align-items:center;background:var(--bg);border-radius:9px;padding:3px;margin-top:2px;border:1px solid var(--border);position:relative;}
+.mt-opt{flex:1;text-align:center;padding:8px 4px;font-size:11px;font-weight:700;border-radius:7px;cursor:pointer;transition:all 0.2s;color:var(--muted);z-index:1;position:relative;line-height:1.3;user-select:none;}
+.mt-opt.active{color:#fff;}
+.mt-pill{position:absolute;top:3px;bottom:3px;width:calc(50% - 3px);border-radius:7px;transition:all 0.2s cubic-bezier(0.34,1.3,0.64,1);z-index:0;}
+.mt-pill.qr    {left:3px;background:var(--green);box-shadow:0 2px 8px rgba(0,201,122,0.3);}
+.mt-pill.manual{left:calc(50%);background:var(--amber);box-shadow:0 2px 8px rgba(255,179,0,0.3);}
+
+/* ── SUBMIT BUTTON ── */
+.btn-submit{width:100%;padding:15px;background:var(--green);border:none;border-radius:12px;font-family:var(--mono);font-size:14px;font-weight:700;color:#fff;letter-spacing:1.5px;cursor:pointer;text-transform:uppercase;transition:all 0.15s;box-shadow:0 4px 14px rgba(0,201,122,0.35);flex-shrink:0;}
+.btn-submit:active{transform:scale(0.97);background:var(--greenD);}
+.btn-submit:disabled{background:var(--border);color:var(--muted);box-shadow:none;cursor:not-allowed;transform:none;}
+.btn-submit.blocked{background:var(--red)!important;box-shadow:0 4px 14px rgba(255,71,87,0.3)!important;cursor:not-allowed;}
+
+/* ── LAST ENTRY STRIP ── */
+.last-entry{flex-shrink:0;border-top:1px dashed var(--border);padding-top:7px;display:none;animation:fadeIn 0.3s ease;}
+.last-entry.show{display:block;}
+.le-label{font-size:9px;font-weight:700;letter-spacing:0.7px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.le-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.le-id  {font-family:var(--mono);font-size:10px;font-weight:700;color:#fff;background:var(--navy);padding:2px 7px;border-radius:20px;}
+.le-mid {font-family:var(--mono);font-size:10px;font-weight:700;color:var(--teal);background:var(--tealB);padding:2px 7px;border-radius:20px;}
+.le-name{font-size:11px;font-weight:700;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* ── SPINNER ── */
+.sp{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.6s linear infinite;vertical-align:middle;margin-right:6px;}
+.sp.d{border-color:var(--border);border-top-color:var(--navy);}
+.sp.a{border-color:rgba(255,179,0,0.3);border-top-color:var(--amber);}
+
+/* ── REPORT COMMON ── */
+.btn-back   {display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.13);border:none;color:#fff;font-size:12px;font-weight:600;font-family:var(--sans);padding:5px 11px;border-radius:7px;cursor:pointer;}
+.btn-refresh{background:rgba(255,255,255,0.13);border:none;color:#fff;font-size:12px;font-weight:600;font-family:var(--sans);padding:5px 11px;border-radius:7px;cursor:pointer;}
+.rsummary{background:linear-gradient(135deg,var(--navy),var(--navyL));border-radius:var(--r);padding:12px 14px;display:flex;gap:0;margin-bottom:10px;}
+.sbox{flex:1;text-align:center;}
+.sbox+.sbox{border-left:1px solid rgba(255,255,255,0.1);}
+.sval{font-family:var(--mono);font-size:18px;font-weight:700;color:#fff;}
+.slbl{font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;}
+.empty{text-align:center;padding:36px 20px;color:var(--muted);}
+.lrow{text-align:center;padding:26px;color:var(--muted);font-size:13px;}
+
+/* ── ENTRY CARDS ── */
+.ecard{background:#fff;border-radius:10px;padding:11px 13px;margin-bottom:8px;box-shadow:var(--sh);border-left:4px solid var(--green);}
+.ech{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.eid {font-family:var(--mono);font-size:10px;color:var(--muted);}
+.emid{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--teal);background:var(--tealB);padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:3px;}
+.ename{font-size:13px;font-weight:700;}
+.emeta{font-size:10px;color:var(--muted);margin-top:4px;display:flex;gap:5px;flex-wrap:wrap;}
+.etag    {background:var(--bg);border-radius:20px;padding:2px 7px;font-size:10px;font-weight:600;}
+.etag.qr {background:#e8fff4;color:#00a362;}
+.etag.man{background:#fff8e8;color:#c47a00;}
+.etag.dup{background:#fef2f2;color:#dc2626;border:1px solid #fca5a5;font-weight:800;}
+.etag.u  {background:var(--tealB);color:var(--teal);}
+
+/* ── DROPDOWN ── */
+.sel-wrap{background:#fff;border-radius:var(--r);padding:10px 12px;box-shadow:var(--sh);margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.sel-wrap select{flex:1;padding:9px 10px;border:2px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--sans);font-weight:600;color:var(--text);background:#fff;outline:none;-webkit-appearance:none;appearance:none;cursor:pointer;}
+.sel-wrap select:focus{border-color:var(--navy);}
+.sel-arrow{font-size:16px;pointer-events:none;color:var(--muted);}
+
+/* ── SUMMARY TABLE ── */
+.sum-table{background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);margin-bottom:10px;}
+.sum-head{display:grid;grid-template-columns:1fr 55px 55px 70px 45px;background:var(--navy);color:#fff;padding:8px 12px;font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;gap:4px;}
+.sum-row{display:grid;grid-template-columns:1fr 55px 55px 70px 45px;padding:9px 12px;border-bottom:1px solid var(--border);font-size:12px;gap:4px;align-items:center;}
+.sum-row:last-child{border-bottom:none;}
+.sum-row.grand{background:linear-gradient(135deg,#f0fff8,#edf9ff);font-weight:700;border-top:2px solid var(--green);}
+.sc1{font-weight:600;color:var(--text);}
+.sc2{text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted);}
+.sc2.hi{color:var(--navy);font-weight:700;}
+.sc3{text-align:right;font-family:var(--mono);font-size:11px;color:var(--greenD);font-weight:700;}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeIn{from{opacity:0;transform:translateY(-5px);}to{opacity:1;transform:translateY(0);}}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── HARD REFRESH BUTTON ── */
+.btn-refresh-hard{
+  position:fixed; bottom:14px; right:14px;
+  width:38px; height:38px; border-radius:50%;
+  background:rgba(255,255,255,0.15);
+  border:1.5px solid rgba(255,255,255,0.25);
+  color:rgba(255,255,255,0.6); font-size:15px;
+  cursor:pointer; display:flex; align-items:center;
+  justify-content:center; z-index:500;
+  transition:all 0.2s; -webkit-appearance:none;
+}
+.btn-refresh-hard:active{ background:rgba(255,255,255,0.3); transform:rotate(180deg); }
+.btn-refresh-hard.dark{
+  background:rgba(15,31,61,0.08);
+  border-color:var(--border); color:var(--muted);
+}
+.btn-refresh-hard.dark:active{ background:var(--border); }
+
+/* ── CAMERA SCANNER ── */
+.cam-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.92);
+  z-index:8000;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;
+}
+.cam-overlay.h{display:none;}
+.cam-header{
+  color:#fff;font-family:var(--mono);font-size:12px;
+  letter-spacing:1px;text-transform:uppercase;text-align:center;
+}
+.cam-video-wrap{
+  position:relative;width:280px;height:280px;
+  border-radius:16px;overflow:hidden;
+  border:3px solid var(--green);
+  box-shadow:0 0 0 4px rgba(0,201,122,0.2);
+}
+.cam-video{width:100%;height:100%;object-fit:cover;}
+.cam-canvas{display:none;}
+/* Scanning crosshair overlay */
+.cam-crosshair{
+  position:absolute;inset:0;pointer-events:none;
+}
+.cam-crosshair::before,.cam-crosshair::after{
+  content:'';position:absolute;
+  width:40px;height:40px;
+  border-color:var(--green);border-style:solid;
+}
+.cam-crosshair::before{top:12px;left:12px;border-width:3px 0 0 3px;}
+.cam-crosshair::after {bottom:12px;right:12px;border-width:0 3px 3px 0;}
+/* Scanning line animation */
+.cam-scanline{
+  position:absolute;left:10%;right:10%;height:2px;
+  background:linear-gradient(90deg,transparent,var(--green),transparent);
+  animation:scanline 2s ease-in-out infinite;
+  box-shadow:0 0 8px var(--green);
+}
+@keyframes scanline{0%{top:15%;}50%{top:80%;}100%{top:15%;}}
+.cam-status{
+  font-size:12px;color:rgba(255,255,255,0.7);
+  text-align:center;min-height:20px;
+}
+.cam-status.found{color:var(--green);font-weight:700;}
+.cam-status.err  {color:var(--red);}
+.btn-cam-close{
+  padding:10px 28px;border:2px solid rgba(255,255,255,0.3);
+  border-radius:30px;background:transparent;color:#fff;
+  font-size:13px;font-weight:600;font-family:var(--sans);cursor:pointer;
+}
+.btn-cam-close:active{background:rgba(255,255,255,0.1);}
+.btn-cam{
+  flex-shrink:0;width:44px;height:44px;
+  border:2px solid var(--border);border-radius:9px;
+  background:#fff;font-size:20px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.15s;-webkit-appearance:none;
+}
+.btn-cam:active{background:var(--navy);border-color:var(--navy);}
+
+/* ── DUP SLIP PAGE ── */
+.dup-search-tabs{display:flex;gap:6px;margin-bottom:8px;}
+.dup-tab{flex:1;padding:8px;border:2px solid var(--border);border-radius:9px;
+  background:#fff;font-size:12px;font-weight:700;color:var(--muted);
+  cursor:pointer;text-align:center;transition:all 0.15s;-webkit-appearance:none;}
+.dup-tab.active{border-color:var(--purple);background:var(--purpleB);color:var(--purple);}
+.dup-tab:active{transform:scale(0.95);}
+.fuzzy-wrap{position:relative;}
+.fuzzy-input{width:100%;padding:11px 13px;border:2px solid var(--border);border-radius:9px;
+  font-size:15px;font-family:var(--sans);font-weight:500;color:var(--text);
+  background:#fff;outline:none;-webkit-appearance:none;transition:border-color 0.15s;}
+.fuzzy-input:focus{border-color:var(--purple);}
+.fuzzy-list{position:absolute;top:calc(100% + 4px);left:0;right:0;
+  background:#fff;border:2px solid var(--purple);border-radius:10px;
+  box-shadow:0 8px 24px rgba(15,31,61,0.15);z-index:500;
+  max-height:200px;overflow-y:auto;display:none;}
+.fuzzy-list.show{display:block;}
+.fuzzy-item{padding:10px 13px;cursor:pointer;border-bottom:1px solid var(--border);}
+.fuzzy-item:last-child{border-bottom:none;}
+.fuzzy-item:active{background:var(--purpleB);}
+.fuzzy-mid{font-family:var(--mono);font-size:10px;color:var(--purple);
+  background:var(--purpleB);padding:1px 7px;border-radius:20px;margin-right:6px;}
+.fuzzy-name{font-size:13px;font-weight:600;color:var(--text);}
+.fuzzy-addr{font-size:11px;color:var(--muted);margin-top:1px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.fuzzy-hl{background:#fef9c3;border-radius:2px;}
+.fuzzy-empty{padding:12px 13px;font-size:13px;color:var(--muted);text-align:center;}
+.dup-badge{display:inline-block;background:var(--purple);color:#fff;
+  font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:4px;}
+
+/* ── PRINT DIALOG ── */
+.print-dialog{
+  position:fixed;inset:0;background:rgba(15,31,61,0.75);
+  z-index:8500;display:flex;align-items:center;justify-content:center;
+  padding:20px;animation:fadeIn 0.2s ease;
+}
+.print-dialog.h{display:none;}
+.print-box{
+  background:#fff;border-radius:18px;padding:22px 20px;
+  width:100%;max-width:320px;text-align:center;
+  box-shadow:0 8px 32px rgba(0,0,0,0.25);
+}
+.print-icon{font-size:38px;margin-bottom:10px;}
+.print-title{font-family:var(--mono);font-size:13px;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;color:var(--navy);margin-bottom:6px;}
+.print-sub{font-size:12px;color:var(--muted);margin-bottom:18px;line-height:1.5;}
+.print-entry-info{
+  background:var(--bg);border-radius:10px;padding:10px 12px;
+  margin-bottom:18px;text-align:left;font-size:12px;color:var(--text);
+  line-height:1.8;
+}
+.print-entry-info strong{color:var(--navy);}
+.print-btns{display:flex;gap:10px;}
+.btn-print-yes{
+  flex:1;padding:13px;background:var(--green);border:none;border-radius:10px;
+  font-family:var(--mono);font-size:13px;font-weight:700;color:#fff;
+  letter-spacing:1px;cursor:pointer;text-transform:uppercase;
+  box-shadow:0 3px 10px rgba(0,201,122,0.3);
+}
+.btn-print-yes:active{background:var(--greenD);}
+.btn-print-no{
+  flex:1;padding:13px;background:var(--bg);border:2px solid var(--border);
+  border-radius:10px;font-family:var(--mono);font-size:13px;font-weight:700;
+  color:var(--muted);letter-spacing:1px;cursor:pointer;text-transform:uppercase;
+}
+.btn-print-no:active{background:var(--border);}
+.print-status{font-size:11px;color:var(--muted);margin-top:10px;min-height:16px;}
+
+/* ── KEYBOARD TOGGLE BUTTON ── */
+.kb-toggle{
+  position:fixed;
+  bottom:14px;
+  left:14px;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  border:2px solid var(--border);
+  background:var(--card);
+  box-shadow:0 2px 10px rgba(0,0,0,0.15);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  cursor:pointer;
+  z-index:500;
+  transition:all 0.2s;
+  -webkit-appearance:none;
+}
+.kb-toggle.kb-on  { background:var(--navy); border-color:var(--navy); }
+.kb-toggle.kb-off { background:var(--card); border-color:var(--border); opacity:0.7; }
+.kb-toggle:active { transform:scale(0.88); }
+
+/* ── EDIT MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,31,61,0.7);z-index:8000;display:flex;align-items:flex-end;justify-content:center;animation:fadeIn 0.2s ease;}
+.modal-overlay.h{display:none;}
+.modal{background:#fff;border-radius:18px 18px 0 0;padding:20px 18px 32px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;animation:slideUp 0.25s cubic-bezier(0.34,1.3,0.64,1);}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.modal-title{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--navy);}
+.modal-close{width:32px;height:32px;border:none;background:var(--bg);border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);}
+.modal-close:active{background:var(--border);}
+.modal-id-row{display:flex;align-items:center;gap:8px;background:var(--bg);border-radius:10px;padding:10px 12px;margin-bottom:14px;}
+.modal-eid{font-family:var(--mono);font-size:11px;font-weight:700;color:#fff;background:var(--navy);padding:2px 8px;border-radius:20px;}
+.modal-mid{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--teal);background:var(--tealB);padding:2px 8px;border-radius:20px;}
+.modal-mid-label{font-size:11px;color:var(--muted);font-weight:500;}
+.mfield{margin-bottom:12px;}
+.mfield label{font-size:10px;font-weight:700;letter-spacing:0.7px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:5px;}
+.mfield input,.mfield select{width:100%;padding:10px 12px;border:2px solid var(--border);border-radius:9px;font-size:14px;font-family:var(--sans);font-weight:500;color:var(--text);background:#fff;outline:none;-webkit-appearance:none;}
+.mfield input:focus,.mfield select:focus{border-color:var(--navy);}
+.mfield input[readonly]{background:var(--bg);color:var(--muted);}
+.modal-method{display:flex;gap:8px;margin-top:2px;}
+.mmethod-btn{flex:1;padding:10px;border:2px solid var(--border);border-radius:9px;background:#fff;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;text-align:center;transition:all 0.15s;-webkit-appearance:none;}
+.mmethod-btn.sel.qr    {border-color:var(--green);background:#e8fff4;color:#00a362;}
+.mmethod-btn.sel.manual{border-color:var(--amber);background:#fff8e8;color:#c47a00;}
+.btn-save{width:100%;padding:14px;background:var(--green);border:none;border-radius:12px;font-family:var(--mono);font-size:14px;font-weight:700;color:#fff;letter-spacing:1.5px;cursor:pointer;text-transform:uppercase;box-shadow:0 4px 14px rgba(0,201,122,0.3);}
+.btn-save:active{background:var(--greenD);}
+.btn-save:disabled{background:var(--border);color:var(--muted);box-shadow:none;cursor:not-allowed;}
+
+/* ── OTP DISPLAY ──
+   The operator reads this aloud and asks the person to
+   confirm it, so it is the loudest thing on the card. */
+.otp-box{
+  margin-top:8px;display:flex;align-items:center;gap:12px;
+  background:var(--navy);border-radius:10px;padding:10px 14px;
+}
+.otp-left{flex:1;}
+.otp-label{
+  font-size:9px;font-weight:700;letter-spacing:1px;
+  color:rgba(255,255,255,0.45);margin-bottom:2px;
+}
+.otp-val{
+  font-family:var(--mono);font-size:32px;font-weight:700;
+  color:var(--green);letter-spacing:4px;line-height:1.1;
+}
+.otp-val.none{font-size:15px;letter-spacing:0;color:var(--amber);}
+.otp-ask{font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px;}
+.otp-icon{font-size:24px;opacity:0.3;}
+
+/* Method card now sits alone, full width */
+.method-card{width:100%;}
+
+/* ── COMMENT FIELD ── */
+.comment-input{
+  width:100%;padding:10px 12px;border:2px solid var(--border);
+  border-radius:9px;font-size:14px;font-family:var(--sans);
+  font-weight:500;color:var(--text);background:#fff;outline:none;
+  -webkit-appearance:none;transition:border-color 0.15s;
+}
+.comment-input:focus{border-color:var(--navy);}
+
+/* ── DUPLICATE NOTICE ── */
+.dup-note{
+  margin-top:6px;padding:7px 10px;background:rgba(255,107,43,0.10);
+  border-radius:8px;font-size:11px;color:var(--orange);font-weight:600;
+  line-height:1.5;
+}
+.dup-note.info{background:rgba(124,58,237,0.09);color:var(--purple);}
+
+/* ── LAST ENTRY: OTP chip replaces qty/amount ── */
+.le-otp{
+  font-family:var(--mono);font-size:11px;font-weight:700;
+  color:var(--greenD);background:#e8fff4;padding:2px 8px;border-radius:20px;
+}
+
+/* ── ENTRY CARD: OTP + method ── */
+.eotp{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--navy);}
+.ecard.dup{border-left-color:var(--purple);}
+.ecmt{
+  font-size:11px;color:var(--muted);margin-top:5px;padding-top:5px;
+  border-top:1px dashed var(--border);font-style:italic;
+}
+
+/* ── SUMMARY TABLE: three numeric columns ── */
+.sum-head,.sum-row{grid-template-columns:1fr 60px 60px 60px;}
+</style>
+</head>
+<body>
+
+<!-- Loading Overlay -->
+<div class="load-ov h" id="lov">
+  <div class="load-icon">🤝</div>
+  <div class="load-txt" id="ltxt">Loading…</div>
+  <div class="load-bar"><div class="load-fill"></div></div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- ════════════════════════════════
+     PAGE: LOGIN
+════════════════════════════════ -->
+<div class="page active" id="page-login">
+  <div class="login-logo">
+    <div class="login-icon">🤝</div>
+    <div class="login-title">SZVS Jain Samaj</div>
+    <div class="login-sub">Shesh Distribution</div>
+  </div>
+  <div class="login-card">
+    <label class="clabel">Username</label>
+    <input class="lin" type="text" id="lu" placeholder="Enter username"
+           autocomplete="off" autocapitalize="none" spellcheck="false">
+    <label class="clabel">Password / PIN</label>
+    <input class="lin" type="password" id="lp" placeholder="Enter password"
+           autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="btn-login" id="blg" onclick="doLogin()">Sign in</button>
+    <div class="login-err" id="lerr"></div>
+    <div style="text-align:center;margin-top:14px;">
+      <span style="font-size:10px;color:rgba(255,255,255,0.25);font-family:var(--mono);" id="ver-login"></span>
+    </div>
+  </div>
+  <button class="btn-refresh-hard" onclick="hardRefresh()" title="Reload latest version">↺</button>
+</div>
+
+<!-- ════════════════════════════════
+     PAGE: ENTRY
+════════════════════════════════ -->
+<div class="page" id="page-entry">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-title">🤝 Shesh Distribution <span class="admin-badge" id="admin-badge" style="display:none;">ADMIN</span></div>
+      <div class="topbar-user" id="ulab"></div>
+    </div>
+    <div class="topbar-btns" id="topbar-btns"></div>
+  </div>
+
+  <div class="entry-body">
+
+    <!-- Member ID -->
+    <div class="c">
+      <label class="clabel">Member ID — scan or type, then press Enter</label>
+      <div class="scan-row">
+        <input class="scan-input" type="text" id="mi"
+          placeholder="Scan barcode or type ID…"
+          autocomplete="off" autocorrect="off" autocapitalize="none"
+          spellcheck="false" inputmode="text"
+          onkeydown="onMK(event)" oninput="onMI()">
+        <button class="btn-cam"   onclick="openCamera('entry')" title="Scan with camera">📷</button>
+        <button class="btn-clear" onclick="clearEntry()" title="Clear">✕</button>
+      </div>
+      <div class="mresult" id="mr"></div>
+    </div>
+
+    <!-- Entry method -->
+    <div class="c method-card">
+      <label class="clabel">Entry method</label>
+      <div class="method-toggle" onclick="toggleMethod()">
+        <div class="mt-pill qr" id="mpill"></div>
+        <div class="mt-opt active" id="mopt-qr">📷 QR<br>Scan</div>
+        <div class="mt-opt"       id="mopt-man">✏️ Manual<br>Entry</div>
+      </div>
+    </div>
+
+    <!-- Comment -->
+    <div class="c">
+      <label class="clabel">Comment (optional)</label>
+      <input type="text" id="entry-comment" class="comment-input"
+             placeholder="Add a note if needed…"
+             autocomplete="off" spellcheck="false">
+    </div>
+
+    <!-- Submit -->
+    <button class="btn-submit" id="bsub" onclick="doSubmit()">Save entry</button>
+
+    <!-- Last Entry Strip -->
+    <div class="last-entry" id="last-entry">
+      <div class="le-label">Saved</div>
+      <div class="le-row">
+        <span class="le-id"   id="le-id"></span>
+        <span class="le-mid"  id="le-mid"></span>
+        <span class="le-name" id="le-name"></span>
+        <span class="le-otp"  id="le-otp"></span>
+      </div>
+    </div>
+
+  </div>
+
+  <button class="kb-toggle kb-off" id="kb-toggle" onclick="toggleKeyboard()" title="Toggle keyboard">⌨️</button>
+</div>
+
+<!-- ════════════════════════════════
+     PAGE: DUPLICATE SLIP
+════════════════════════════════ -->
+<div class="page" id="page-dupslip">
+  <div class="topbar">
+    <button class="btn-back" onclick="goEntry()">← Back</button>
+    <div class="topbar-title">Duplicate Slip</div>
+    <button class="btn-refresh" onclick="resetDupSlip()">↺</button>
+  </div>
+
+  <div class="entry-body">
+
+    <!-- Search tabs -->
+    <div class="dup-search-tabs">
+      <button class="dup-tab active" id="dup-tab-id"   onclick="setDupTab('id')">Member ID</button>
+      <button class="dup-tab"        id="dup-tab-name" onclick="setDupTab('name')">Search by name</button>
+    </div>
+
+    <!-- ID panel -->
+    <div class="c" id="dup-id-panel">
+      <label class="clabel">Member ID — scan or type, then press Enter</label>
+      <div class="scan-row">
+        <input class="scan-input" type="text" id="dup-mi"
+          placeholder="Scan barcode or type ID…"
+          autocomplete="off" autocorrect="off" autocapitalize="none"
+          spellcheck="false" inputmode="text"
+          onkeydown="onDupMK(event)" oninput="onDupMI()">
+        <button class="btn-cam" onclick="openCamera('dup')" title="Scan with camera">📷</button>
+      </div>
+    </div>
+
+    <!-- Name panel -->
+    <div class="c" id="dup-name-panel" style="display:none;">
+      <label class="clabel">Member name</label>
+      <div class="fuzzy-wrap">
+        <input type="text" class="fuzzy-input" id="dup-name-input"
+          placeholder="Type at least 2 letters…"
+          autocomplete="off" spellcheck="false" oninput="onDupNameInput()">
+        <div class="fuzzy-list" id="dup-fuzzy-list"></div>
+      </div>
+    </div>
+
+    <div class="mresult" id="dup-mr"></div>
+
+    <!-- Entry method -->
+    <div class="c method-card">
+      <label class="clabel">Entry method</label>
+      <div class="method-toggle" onclick="dupToggleMethod()">
+        <div class="mt-pill qr" id="dup-mpill"></div>
+        <div class="mt-opt active" id="dup-mopt-qr">📷 QR<br>Scan</div>
+        <div class="mt-opt"       id="dup-mopt-man">✏️ Manual<br>Entry</div>
+      </div>
+    </div>
+
+    <!-- Comment -->
+    <div class="c">
+      <label class="clabel">Comment (optional)</label>
+      <input type="text" id="dup-comment" class="comment-input"
+             placeholder="Why is a duplicate slip needed?"
+             autocomplete="off" spellcheck="false">
+    </div>
+
+    <!-- Submit -->
+    <button class="btn-submit" id="dup-bsub" onclick="dupSubmit()"
+      style="background:var(--purple);box-shadow:0 4px 14px rgba(124,58,237,0.35);">
+      Save duplicate slip
+    </button>
+
+    <!-- Last entry strip -->
+    <div class="last-entry" id="dup-last-entry">
+      <div class="le-label">Saved</div>
+      <div class="le-row">
+        <span class="le-id"   id="dup-le-id"></span>
+        <span class="le-mid"  id="dup-le-mid"></span>
+        <span class="le-name" id="dup-le-name"></span>
+        <span class="le-otp"  id="dup-le-otp"></span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     PAGE: REPORT 1 — My Entries
+════════════════════════════════ -->
+<div class="page" id="page-report1">
+  <div class="topbar">
+    <button class="btn-back" onclick="goEntry()">← Back</button>
+    <div class="topbar-title">My Entries</div>
+    <button class="btn-refresh" onclick="loadReport1()">🔄</button>
+  </div>
+  <div class="scroll-content">
+    <div class="rsummary">
+      <div class="sbox"><div class="sval" id="r1c">—</div><div class="slbl">Entries</div></div>
+      <div class="sbox"><div class="sval" id="r1n">—</div><div class="slbl">Normal</div></div>
+      <div class="sbox"><div class="sval" id="r1d">—</div><div class="slbl">Dup slips</div></div>
+    </div>
+    <div id="r1list"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     PAGE: REPORT 2 — All Entries (Admin)
+════════════════════════════════ -->
+<div class="page" id="page-report2">
+  <div class="topbar">
+    <button class="btn-back" onclick="goEntry()">← Back</button>
+    <div class="topbar-title">All Entries</div>
+    <button class="btn-refresh" onclick="loadReport2()">🔄</button>
+  </div>
+  <div class="scroll-content">
+    <div class="sel-wrap">
+      <select id="r2sel" onchange="onR2UserChange()">
+        <option value="ALL">— All users —</option>
+      </select>
+      <span class="sel-arrow">▾</span>
+    </div>
+    <div class="rsummary">
+      <div class="sbox"><div class="sval" id="r2c">—</div><div class="slbl">Entries</div></div>
+      <div class="sbox"><div class="sval" id="r2n">—</div><div class="slbl">Normal</div></div>
+      <div class="sbox"><div class="sval" id="r2d">—</div><div class="slbl">Dup slips</div></div>
+    </div>
+    <div id="r2list"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     PAGE: REPORT 3 — Summary (Admin)
+════════════════════════════════ -->
+<div class="page" id="page-report3">
+  <div class="topbar">
+    <button class="btn-back" onclick="goEntry()">← Back</button>
+    <div class="topbar-title">Summary</div>
+    <button class="btn-refresh" onclick="loadReport3()">🔄</button>
+  </div>
+  <div class="scroll-content">
+    <div id="r3content"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     EDIT MODAL (Admin)
+════════════════════════════════ -->
+<div class="modal-overlay h" id="edit-modal-overlay" onclick="closeEditModal(event)">
+  <div class="modal" id="edit-modal">
+    <div class="modal-header">
+      <span class="modal-title">Edit entry</span>
+      <button class="modal-close" onclick="closeEditModal()">✕</button>
+    </div>
+    <div class="modal-id-row">
+      <span class="modal-eid" id="medit-eid"></span>
+      <span class="modal-mid" id="medit-mid"></span>
+      <span class="modal-mid-label">Member cannot be changed</span>
+    </div>
+    <div class="mfield">
+      <label>Member name</label>
+      <input type="text" id="medit-name" readonly tabindex="-1">
+    </div>
+    <div class="mfield">
+      <label>OTP</label>
+      <input type="text" id="medit-otp" readonly tabindex="-1">
+    </div>
+    <div class="mfield">
+      <label>Entry method</label>
+      <div class="modal-method">
+        <button class="mmethod-btn qr"     id="medit-qr"  onclick="setModalMethod('qrcode')">📷 QR Scan</button>
+        <button class="mmethod-btn manual" id="medit-man" onclick="setModalMethod('manual')">✏️ Manual</button>
+      </div>
+    </div>
+    <div class="mfield">
+      <label>Entered by</label>
+      <select id="medit-user"></select>
+    </div>
+    <div class="mfield">
+      <label>Type</label>
+      <select id="medit-remark">
+        <option value="">Normal entry</option>
+        <option value="Duplicate Slip">Duplicate slip</option>
+      </select>
+    </div>
+    <div class="mfield">
+      <label>Comment</label>
+      <input type="text" id="medit-comment" placeholder="Optional note">
+    </div>
+    <button class="btn-save" id="medit-save" onclick="saveEdit()">Save changes</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     PRINT DIALOG
+════════════════════════════════ -->
+<div class="print-dialog h" id="print-dialog">
+  <div class="print-box">
+    <div class="print-icon">🖨️</div>
+    <div class="print-title">Print slip</div>
+    <div class="print-sub">Send this entry to the<br>Bluetooth thermal printer?</div>
+    <div class="print-entry-info" id="print-preview"></div>
+    <div class="print-btns">
+      <button class="btn-print-no"  onclick="closePrintDialog()">Skip</button>
+      <button class="btn-print-yes" onclick="doPrint()">🖨️ Print</button>
+    </div>
+    <div class="print-status" id="print-status"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     CAMERA SCANNER OVERLAY
+════════════════════════════════ -->
+<div class="cam-overlay h" id="cam-overlay">
+  <div class="cam-header">📷 Point camera at QR code</div>
+  <div class="cam-video-wrap">
+    <video class="cam-video" id="cam-video" autoplay playsinline muted></video>
+    <canvas class="cam-canvas" id="cam-canvas"></canvas>
+    <div class="cam-crosshair"></div>
+    <div class="cam-scanline"></div>
+  </div>
+  <div class="cam-status" id="cam-status">Starting camera…</div>
+  <button class="btn-cam-close" onclick="closeCamera()">Cancel</button>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════
+//  CONFIG — paste the Apps Script Web App URL here
+// ════════════════════════════════════════════════════
+const SCRIPT_URL = 'PASTE_YOUR_APPS_SCRIPT_EXEC_URL_HERE';
+
+function aURL(p){ return SCRIPT_URL+'?'+Object.entries(p).map(([k,v])=>encodeURIComponent(k)+'='+encodeURIComponent(v)).join('&'); }
+
+async function api(p){
+  return new Promise((resolve, reject)=>{
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', aURL(p), true);
+    xhr.onload = function(){
+      if(xhr.status >= 200 && xhr.status < 400){
+        try{ resolve(JSON.parse(xhr.responseText)); }
+        catch(e){ console.error('JSON parse failed, length:',xhr.responseText.length); reject(e); }
+      } else { reject(new Error('HTTP '+xhr.status)); }
+    };
+    xhr.onerror   = ()=>reject(new Error('Network error'));
+    xhr.ontimeout = ()=>reject(new Error('Request timed out'));
+    xhr.timeout   = p.action==='getMembers' ? 60000 : 20000;
+    xhr.send();
+  });
+}
+
+// ════════════════════════════════════════════════════
+//  QR CODE DECODER
+//  QR format: year(4) + numeric + month(2) + alpha
+//    2026105A   → A1
+//    202613105R → R131
+//    20262505BH → BH25
+//  Anything not starting with a 4-digit year passes
+//  through unchanged (manual entry).
+// ════════════════════════════════════════════════════
+function decodeQR(input) {
+  const s = input.trim().toUpperCase();
+  const yearMatch = s.match(/^(20[2-9][0-9])/);
+  if (!yearMatch) return s;
+
+  const rest = s.slice(4);
+  const alphaMatch = rest.match(/([A-Z]{1,2})$/);
+  if (!alphaMatch) return s;
+  const alpha = alphaMatch[1];
+
+  const withoutAlpha = rest.slice(0, rest.length - alpha.length);
+  if (withoutAlpha.length < 3) return s;
+  const numeric = withoutAlpha.slice(0, withoutAlpha.length - 2);
+  if (!numeric) return s;
+
+  return alpha + numeric;
+}
+
+// ════════════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════════════
+let cUser=null, cName=null, rStart=null, rEnd=null;
+let isAdmin=false, printRequired=true;
+let mmap={};
+let found=null, isDup=false, dupInfo=null;
+let method='qrcode', scanMode=true, lastKT=0;
+let kbOpen=false;
+let r2AllEntries=[];
+
+// ════════════════════════════════════════════════════
+//  LOGIN
+// ════════════════════════════════════════════════════
+function applyLogin(d){
+  cUser=d.userid; cName=d.name;
+  rStart=d.range_start; rEnd=d.range_end;
+  isAdmin=!!d.is_admin;
+  printRequired=d.print_required!==false;
+}
+
+function cacheMembers(m){
+  mmap={};
+  (m.members||[]).forEach(mb=>{ mmap[String(mb.memberid).trim().toUpperCase()]=mb; });
+  console.log('Members cached:', Object.keys(mmap).length);
+}
+
+async function autoLogin(userid, password){
+  document.getElementById('lov').classList.remove('h');
+  try{
+    setLT('Signing in…');
+    const d=await api({action:'login',userid,password});
+    if(!d.success){
+      sessionStorage.clear();
+      document.getElementById('lov').classList.add('h');
+      showPage('login');
+      setTimeout(()=>document.getElementById('lu').focus(),100);
+      return;
+    }
+    applyLogin(d);
+    setLT('Loading members…');
+    cacheMembers(await api({action:'getMembers'}));
+    document.getElementById('lov').classList.add('h');
+    showPage('entry'); initEntry();
+  }catch(e){
+    console.error('autoLogin error:', e);
+    document.getElementById('lov').classList.add('h');
+    showPage('login');
+    setTimeout(()=>document.getElementById('lu').focus(),100);
+  }
+}
+
+async function doLogin(){
+  const uid=document.getElementById('lu').value.trim();
+  const pwd=document.getElementById('lp').value.trim();
+  const err=document.getElementById('lerr');
+  const btn=document.getElementById('blg');
+  err.textContent='';
+  if(!uid||!pwd){ err.textContent='Enter your username and password'; return; }
+
+  btn.disabled=true; btn.innerHTML='<span class="sp"></span>Checking…';
+  try{
+    setLT('Signing in…');
+    document.getElementById('lov').classList.remove('h');
+    const d=await api({action:'login',userid:uid,password:pwd});
+    if(!d.success){
+      document.getElementById('lov').classList.add('h');
+      err.textContent=d.error||'Sign in failed';
+      btn.disabled=false; btn.innerHTML='Sign in'; return;
+    }
+    applyLogin(d);
+    sessionStorage.setItem('lu',cUser); sessionStorage.setItem('lp',pwd);
+
+    setLT('Loading members…');
+    cacheMembers(await api({action:'getMembers'}));
+    document.getElementById('lov').classList.add('h');
+    showPage('entry'); initEntry();
+  }catch(e){
+    document.getElementById('lov').classList.add('h');
+    err.textContent='Network error — check your connection';
+  }
+  btn.disabled=false; btn.innerHTML='Sign in';
+}
+
+function setLT(t){ document.getElementById('ltxt').textContent=t; }
+
+function hardRefresh(){
+  window.location.replace(window.location.href.split('?')[0] + '?v=' + Date.now());
+}
+
+function showVersion(){
+  const el = document.getElementById('ver-login');
+  if(!el) return;
+  const meta = document.querySelector('meta[name="app-version"]');
+  el.textContent = 'v' + (meta ? meta.content : 'unknown');
+}
+
+function doLogout(){
+  sessionStorage.clear();
+  mmap={}; cUser=cName=null; isAdmin=false; printRequired=true;
+  document.getElementById('lu').value='';
+  document.getElementById('lp').value='';
+  document.getElementById('lerr').textContent='';
+  showPage('login');
+  setTimeout(()=>document.getElementById('lu').focus(),100);
+}
+
+// ════════════════════════════════════════════════════
+//  PAGE NAV
+// ════════════════════════════════════════════════════
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function goEntry()  { showPage('entry');  focusMI(); }
+function goDupSlip(){ showPage('dupslip'); resetDupSlip(); }
+function goReport1(){ showPage('report1'); loadReport1(); }
+function goReport2(){ if(!isAdmin){showToast('Admin access required','error');return;} showPage('report2'); loadReport2(); }
+function goReport3(){ if(!isAdmin){showToast('Admin access required','error');return;} showPage('report3'); loadReport3(); }
+
+// ════════════════════════════════════════════════════
+//  ENTRY PAGE
+// ════════════════════════════════════════════════════
+function initEntry(){
+  document.getElementById('ulab').textContent='👤 '+(cName||cUser);
+  document.getElementById('admin-badge').style.display=isAdmin?'inline-block':'none';
+  document.getElementById('topbar-btns').innerHTML = isAdmin
+    ? `<button class="tbtn" onclick="goReport1()">📋 My</button>
+       <button class="tbtn admin" onclick="goReport2()">👥 All</button>
+       <button class="tbtn admin" onclick="goReport3()">📊 Summary</button>
+       <button class="tbtn" style="background:rgba(124,58,237,0.25);color:#c4b5fd;" onclick="goDupSlip()">🔖 Dup</button>
+       <button class="tbtn" onclick="doLogout()">Exit</button>
+       <button class="tbtn" onclick="hardRefresh()" title="Reload latest version" style="font-size:14px;padding:5px 8px;">↺</button>`
+    : `<button class="tbtn" onclick="goReport1()">📊 Report</button>
+       <button class="tbtn" style="background:rgba(124,58,237,0.25);color:#c4b5fd;" onclick="goDupSlip()">🔖 Dup</button>
+       <button class="tbtn" onclick="doLogout()">Exit</button>
+       <button class="tbtn" onclick="hardRefresh()" title="Reload latest version" style="font-size:14px;padding:5px 8px;">↺</button>`;
+  resetForm();
+}
+
+function focusMI(){
+  setTimeout(()=>{
+    const e=document.getElementById('mi');
+    if(!e) return;
+    e.setAttribute('inputmode','text');
+    e.focus();
+    setKbState(true);
+  }, 150);
+}
+
+// Keyboard toggle. inputmode=none hides the on-screen
+// keyboard without using readonly, which would block
+// keydown events coming from a hardware scanner.
+function toggleKeyboard(){
+  const mi = document.getElementById('mi');
+  if(!mi) return;
+  mi.setAttribute('inputmode', kbOpen ? 'none' : 'text');
+  mi.focus();
+  setKbState(!kbOpen);
+}
+
+function setKbState(open){
+  kbOpen = open;
+  const btn = document.getElementById('kb-toggle');
+  if(!btn) return;
+  btn.className = 'kb-toggle ' + (open ? 'kb-on' : 'kb-off');
+  btn.title     = open ? 'Keyboard on — tap to hide' : 'Keyboard off — tap to show';
+}
+
+// ════════════════════════════════════════════════════
+//  SCANNER DETECTION
+//  A hardware scanner types far faster than a person,
+//  so sub-80ms gaps between keys mean "scanned".
+// ════════════════════════════════════════════════════
+function onMI(){
+  const now=Date.now(), d=now-lastKT; lastKT=now;
+  if(d<80) scanMode=true;
+  else if(document.getElementById('mi').value.length<=1) scanMode=true;
+  else scanMode=false;
+}
+
+function onMK(e){
+  if(e.key!=='Enter') return;
+  e.preventDefault();
+  const raw=document.getElementById('mi').value.trim();
+  if(!raw) return;
+  const v=decodeQR(raw);
+  if(v!==raw) document.getElementById('mi').value=v;
+  setMethod(scanMode?'qrcode':'manual');
+  lookupMember(v);
+}
+
+// ════════════════════════════════════════════════════
+//  ENTRY METHOD
+// ════════════════════════════════════════════════════
+function toggleMethod(){ setMethod(method==='qrcode'?'manual':'qrcode'); }
+function setMethod(m){ method=m; renderMethod(); }
+function renderMethod(){
+  const pill=document.getElementById('mpill');
+  const oqr=document.getElementById('mopt-qr');
+  const omn=document.getElementById('mopt-man');
+  if(method==='qrcode'){ pill.className='mt-pill qr'; oqr.classList.add('active'); omn.classList.remove('active'); }
+  else                 { pill.className='mt-pill manual'; omn.classList.add('active'); oqr.classList.remove('active'); }
+}
+
+// ════════════════════════════════════════════════════
+//  MEMBER CARD
+//  Shared by the entry page and the duplicate slip page.
+//  The OTP is the point of this card — the operator reads
+//  it out and the person collecting must confirm it.
+// ════════════════════════════════════════════════════
+function memberCardHtml(m, opts){
+  opts = opts || {};
+  const otp = String(m.otp||'').trim();
+  const otpBlock = `
+    <div class="otp-box">
+      <div class="otp-left">
+        <div class="otp-label">OTP — ask the member to confirm</div>
+        <div class="otp-val${otp?'':' none'}">${otp?esc(otp):'No OTP on record'}</div>
+      </div>
+      <div class="otp-icon">🔐</div>
+    </div>`;
+
+  return `
+    <div class="mcard${opts.cls?' '+opts.cls:''}">
+      <span class="mbadge${opts.cls==='dup'?' dup':''}">${esc(m.memberid)}</span>
+      <div class="mname">${esc(m.name)}</div>
+      <div class="maddr">📍 ${esc(m.address)}</div>
+      <div class="mmeta">
+        <span class="mchip">📌 ${esc(m.pincode)}</span>
+        <span class="mchip">📱 ${esc(m.mobile)}</span>
+      </div>
+      ${otpBlock}
+      ${opts.footer||''}
+    </div>`;
+}
+
+// ════════════════════════════════════════════════════
+//  MEMBER LOOKUP — entry page
+//  Step 1: instant hit from the local cache
+//  Step 2: duplicate check against the server
+// ════════════════════════════════════════════════════
+function lookupMember(memberId){
+  showPage('entry');
+  const mr=document.getElementById('mr');
+  const mi=document.getElementById('mi');
+  if(!mr||!mi) return;
+
+  mi.setAttribute('inputmode','text');
+  mi.removeAttribute('readonly');
+
+  found=null; isDup=false; dupInfo=null;
+  mi.className='scan-input';
+  updateSubmitBtn();
+
+  const q=String(memberId).trim().toUpperCase().replace(/\s+/g,'');
+  if(!q) return;
+
+  mr.innerHTML=`<div style="padding:8px;color:var(--muted);font-size:12px;"><span class="sp d"></span> Looking up ${esc(q)}…</div>`;
+  mr.classList.add('show');
+
+  const member = mmap[q] || mmap[String(parseInt(q,10))] || mmap[q.replace(/^0+/,'')];
+
+  if(!member){
+    mi.className='scan-input err';
+    mi.blur();
+    mr.innerHTML=`<div class="mcard nf"><div class="nf-text">No member with ID ${esc(q)} — check and try again</div></div>`;
+    return;
+  }
+
+  mi.className='scan-input chk';
+  mi.blur();
+  mr.innerHTML=memberCardHtml(member,{
+    cls:'chk',
+    footer:`<div class="chk-row"><span class="sp a"></span> Checking for an earlier entry…</div>`
+  });
+
+  api({action:'checkDup', member_id:q})
+    .then(dup=>{
+      if(dup.duplicate){
+        isDup=true; dupInfo=dup;
+        mi.className='scan-input warn';
+        mr.innerHTML=memberCardHtml(member,{
+          cls:'dup',
+          footer:`<div class="dup-note">Already collected — entry #${esc(String(dup.entry_id))} by
+                  <strong>${esc(dup.by)}</strong>${dup.at?' on <strong>'+esc(dup.at)+'</strong>':''}.
+                  Use the Duplicate Slip page if a replacement is needed.</div>`
+        });
+      } else {
+        found=member;
+        mi.className='scan-input ok';
+        mr.innerHTML=memberCardHtml(member);
+      }
+      updateSubmitBtn();
+      const cont=document.querySelector('#page-entry .entry-body');
+      if(cont) cont.scrollTop=0;
+    })
+    .catch(()=>{
+      // Server unreachable. Allow the entry — the server
+      // re-checks for duplicates on insert anyway.
+      found=member;
+      mi.className='scan-input ok';
+      mr.innerHTML=memberCardHtml(member,{
+        footer:`<div class="chk-row" style="color:var(--red);">Could not check for earlier entries</div>`
+      });
+      updateSubmitBtn();
+    });
+}
+
+function updateSubmitBtn(){
+  const b=document.getElementById('bsub');
+  if(isDup){ b.className='btn-submit blocked'; b.textContent='Already collected'; b.disabled=true; }
+  else     { b.className='btn-submit'; b.textContent='Save entry'; b.disabled=false; }
+}
+
+function clearEntry(){
+  found=null; isDup=false; dupInfo=null;
+  const mi=document.getElementById('mi');
+  mi.value=''; mi.className='scan-input';
+  document.getElementById('mr').innerHTML='';
+  document.getElementById('mr').classList.remove('show');
+  updateSubmitBtn();
+  focusMI();
+}
+
+// ════════════════════════════════════════════════════
+//  SUBMIT — entry page
+//  The entry ID comes back from the server; it is not
+//  predicted here.
+// ════════════════════════════════════════════════════
+async function doSubmit(){
+  if(!found){ showToast('Scan a member ID first','error'); return; }
+  if(isDup) { showToast('This member has already collected','warning'); return; }
+
+  const b=document.getElementById('bsub');
+  b.disabled=true; b.innerHTML='<span class="sp"></span>Saving…';
+
+  const saved   = found;
+  const comment = (document.getElementById('entry-comment').value||'').trim();
+
+  try{
+    const d=await api({
+      action:'addEntry',
+      memberid:saved.memberid, member_name:saved.name,
+      otp:saved.otp||'', entry_method:method,
+      logged_by:cUser, range_start:rStart, range_end:rEnd,
+      comment:comment,
+    });
+
+    if(d.success){
+      showLastEntry('le', d.entry_id, saved.memberid, saved.name, saved.otp);
+      showToast('Saved as entry #'+d.entry_id, 'success', 4000);
+
+      if(printRequired){
+        showPrintDialog({
+          entry_id: d.entry_id, member_id: saved.memberid, name: saved.name,
+          mobile: saved.mobile||'', otp: saved.otp||'', remark:'', comment:comment,
+          userid: cUser, username: cName, timestamp: d.timestamp,
+        });
+      }
+      resetForm();
+    } else if(d.duplicate){
+      isDup=true; updateSubmitBtn();
+      showToast(d.error,'warning',5000);
+    } else {
+      showToast(d.error||'Could not save','error');
+      b.disabled=false; b.textContent='Save entry';
+    }
+  }catch(e){
+    showToast('Network error — try again','error');
+    b.disabled=false; b.textContent='Save entry';
+  }
+}
+
+function showLastEntry(prefix, eid, memberid, name, otp){
+  document.getElementById(prefix+'-id').textContent   = '#'+eid;
+  document.getElementById(prefix+'-mid').textContent  = memberid;
+  document.getElementById(prefix+'-name').textContent = name;
+  document.getElementById(prefix+'-otp').textContent  = otp ? 'OTP '+otp : '';
+  document.getElementById(prefix==='le'?'last-entry':'dup-last-entry').classList.add('show');
+}
+
+function resetForm(){
+  found=null; isDup=false; dupInfo=null;
+  const mi=document.getElementById('mi');
+  mi.value=''; mi.className='scan-input';
+  mi.setAttribute('inputmode','text');
+  mi.removeAttribute('readonly');
+  document.getElementById('mr').innerHTML='';
+  document.getElementById('mr').classList.remove('show');
+  document.getElementById('entry-comment').value='';
+  method='qrcode'; renderMethod(); updateSubmitBtn();
+  focusMI();
+}
+
+// ════════════════════════════════════════════════════
+//  DUPLICATE SLIP PAGE
+// ════════════════════════════════════════════════════
+let dupFound=null, dupMethod='qrcode', dupScanMode=true, dupLastKT=0, dupTabMode='id';
+
+function resetDupSlip(){
+  dupFound=null;
+  const mi=document.getElementById('dup-mi');
+  mi.value=''; mi.className='scan-input';
+  document.getElementById('dup-name-input').value='';
+  document.getElementById('dup-comment').value='';
+  hideFuzzyList();
+  document.getElementById('dup-mr').innerHTML='';
+  document.getElementById('dup-mr').classList.remove('show');
+  dupMethod='qrcode'; dupRenderMethod();
+  const btn=document.getElementById('dup-bsub');
+  btn.disabled=false; btn.innerHTML='Save duplicate slip';
+  setTimeout(()=>{ document.getElementById('dup-mi').focus(); },150);
+}
+
+function setDupTab(tab){
+  dupTabMode=tab;
+  document.getElementById('dup-tab-id').classList.toggle('active',   tab==='id');
+  document.getElementById('dup-tab-name').classList.toggle('active', tab==='name');
+  document.getElementById('dup-id-panel').style.display   = tab==='id'   ? 'block' : 'none';
+  document.getElementById('dup-name-panel').style.display = tab==='name' ? 'block' : 'none';
+  dupFound=null;
+  document.getElementById('dup-mr').innerHTML='';
+  document.getElementById('dup-mr').classList.remove('show');
+  hideFuzzyList();
+}
+
+function onDupMI(){
+  const now=Date.now(), d=now-dupLastKT; dupLastKT=now;
+  if(d<80) dupScanMode=true;
+  else if(document.getElementById('dup-mi').value.length<=1) dupScanMode=true;
+  else dupScanMode=false;
+}
+
+function onDupMK(e){
+  if(e.key!=='Enter') return;
+  e.preventDefault();
+  const raw=document.getElementById('dup-mi').value.trim();
+  if(!raw) return;
+  const v=decodeQR(raw);
+  if(v!==raw) document.getElementById('dup-mi').value=v;
+  dupMethod = dupScanMode ? 'qrcode' : 'manual';
+  dupRenderMethod();
+  dupLookupMember(v);
+}
+
+// ── Name search ──────────────────────────────────────
+function onDupNameInput(){
+  const q=document.getElementById('dup-name-input').value.trim();
+  if(q.length<2){ hideFuzzyList(); return; }
+  renderFuzzyList(dupFuzzySearch(q,8), q);
+}
+
+function dupFuzzySearch(query, max){
+  const q=query.toUpperCase();
+  const words=q.split(/\s+/).filter(Boolean);
+  const results=[];
+  for(const key in mmap){
+    const m=mmap[key];
+    const name=(m.name||'').toUpperCase();
+    let allMatch=true;
+    for(const w of words){ if(name.indexOf(w)===-1){ allMatch=false; break; } }
+    if(!allMatch) continue;
+    let score = name.indexOf(q)!==-1 ? 100 : 0;
+    for(const w of words){ name.split(' ').forEach(p=>{ if(p.startsWith(w)) score+=20; }); }
+    results.push({member:m, score});
+  }
+  results.sort((a,b)=>b.score-a.score);
+  return results.slice(0,max).map(r=>r.member);
+}
+
+function renderFuzzyList(results, query){
+  const list=document.getElementById('dup-fuzzy-list');
+  if(!results.length){
+    list.innerHTML=`<div class="fuzzy-empty">No members match that name</div>`;
+    list.classList.add('show'); return;
+  }
+  const qU=query.toUpperCase();
+  list.innerHTML=results.map(m=>{
+    const name=m.name||'';
+    const idx=name.toUpperCase().indexOf(qU);
+    let hlName=esc(name);
+    if(idx!==-1) hlName = esc(name.slice(0,idx))
+      +`<span class="fuzzy-hl">${esc(name.slice(idx,idx+query.length))}</span>`
+      +esc(name.slice(idx+query.length));
+    return `<div class="fuzzy-item" onmousedown="selectDupFuzzy('${esc(m.memberid)}')">
+      <div><span class="fuzzy-mid">${esc(m.memberid)}</span><span class="fuzzy-name">${hlName}</span></div>
+      <div class="fuzzy-addr">📍 ${esc(m.address)}</div>
+    </div>`;
+  }).join('');
+  list.classList.add('show');
+}
+
+function selectDupFuzzy(memberid){
+  hideFuzzyList();
+  document.getElementById('dup-name-input').value='';
+  dupTabMode='id';
+  document.getElementById('dup-tab-id').classList.add('active');
+  document.getElementById('dup-tab-name').classList.remove('active');
+  document.getElementById('dup-id-panel').style.display='block';
+  document.getElementById('dup-name-panel').style.display='none';
+  document.getElementById('dup-mi').value=memberid;
+  dupMethod='manual'; dupRenderMethod();
+  setTimeout(()=>dupLookupMember(memberid),50);
+}
+
+function hideFuzzyList(){
+  setTimeout(()=>{ const l=document.getElementById('dup-fuzzy-list'); if(l) l.classList.remove('show'); },200);
+}
+
+// ── Lookup on the dup page ───────────────────────────
+// A prior entry is expected here, so it is shown as
+// information rather than a block.
+function dupLookupMember(memberId){
+  showPage('dupslip');
+  const mr=document.getElementById('dup-mr');
+  const mi=document.getElementById('dup-mi');
+  if(!mr||!mi) return;
+
+  dupFound=null;
+  mi.className='scan-input';
+
+  const q=String(memberId).trim().toUpperCase().replace(/\s+/g,'');
+  if(!q) return;
+
+  mr.innerHTML=`<div style="padding:8px;color:var(--muted);font-size:12px;"><span class="sp d"></span> Looking up ${esc(q)}…</div>`;
+  mr.classList.add('show');
+
+  const member = mmap[q] || mmap[String(parseInt(q,10))] || mmap[q.replace(/^0+/,'')];
+  if(!member){
+    mi.className='scan-input err';
+    mi.blur();
+    mr.innerHTML=`<div class="mcard nf"><div class="nf-text">No member with ID ${esc(q)} — check and try again</div></div>`;
+    return;
+  }
+
+  dupFound=member;
+  mi.className='scan-input ok';
+  mi.blur();
+  mr.innerHTML=memberCardHtml(member);
+
+  api({action:'checkDup', member_id:q})
+    .then(dup=>{
+      if(!dupFound || dupFound.memberid!==member.memberid) return;
+      mr.innerHTML=memberCardHtml(member,{
+        footer: dup.duplicate
+          ? `<div class="dup-note info">Original entry #${esc(String(dup.entry_id))} by
+             <strong>${esc(dup.by)}</strong>${dup.at?' on <strong>'+esc(dup.at)+'</strong>':''}</div>`
+          : `<div class="dup-note info">No earlier entry found for this member</div>`
+      });
+    })
+    .catch(()=>{});
+}
+
+function dupToggleMethod(){
+  dupMethod = (dupMethod==='qrcode') ? 'manual' : 'qrcode';
+  dupRenderMethod();
+}
+
+function dupRenderMethod(){
+  const pill=document.getElementById('dup-mpill');
+  const oqr=document.getElementById('dup-mopt-qr');
+  const omn=document.getElementById('dup-mopt-man');
+  if(dupMethod==='qrcode'){ pill.className='mt-pill qr'; oqr.classList.add('active'); omn.classList.remove('active'); }
+  else                    { pill.className='mt-pill manual'; omn.classList.add('active'); oqr.classList.remove('active'); }
+}
+
+async function dupSubmit(){
+  if(!dupFound){ showToast('Scan or pick a member first','error'); return; }
+  const btn=document.getElementById('dup-bsub');
+  btn.disabled=true; btn.innerHTML='<span class="sp"></span>Saving…';
+
+  const saved   = dupFound;
+  const comment = (document.getElementById('dup-comment').value||'').trim();
+
+  try{
+    const d=await api({
+      action:'addEntry',
+      memberid:saved.memberid, member_name:saved.name,
+      otp:saved.otp||'', entry_method:dupMethod,
+      logged_by:cUser, range_start:rStart, range_end:rEnd,
+      remark:'Duplicate Slip', comment:comment,
+    });
+
+    if(d.success){
+      showLastEntry('dup-le', d.entry_id, saved.memberid, saved.name, saved.otp);
+      showToast('Duplicate slip #'+d.entry_id+' saved','success',4000);
+
+      if(printRequired){
+        showPrintDialog({
+          entry_id:d.entry_id, member_id:saved.memberid, name:saved.name,
+          mobile:saved.mobile||'', otp:saved.otp||'',
+          remark:'Duplicate Slip', comment:comment,
+          userid:cUser, username:cName, timestamp:d.timestamp,
+        });
+      }
+
+      dupFound=null;
+      const mi=document.getElementById('dup-mi');
+      mi.value=''; mi.className='scan-input';
+      document.getElementById('dup-comment').value='';
+      document.getElementById('dup-mr').innerHTML='';
+      document.getElementById('dup-mr').classList.remove('show');
+      dupMethod='qrcode'; dupRenderMethod();
+      setTimeout(()=>{ const e=document.getElementById('dup-mi'); if(e) e.focus(); },150);
+    } else {
+      showToast(d.error||'Could not save','error');
+    }
+  }catch(e){
+    showToast('Network error — try again','error');
+  }
+  btn.disabled=false; btn.innerHTML='Save duplicate slip';
+}
+
+// ════════════════════════════════════════════════════
+//  REPORTS
+// ════════════════════════════════════════════════════
+function loadReport1(){
+  ['r1c','r1n','r1d'].forEach(id=>document.getElementById(id).textContent='…');
+  document.getElementById('r1list').innerHTML=`<div class="lrow"><span class="sp d"></span> Loading…</div>`;
+  api({action:'getEntries',logged_by:cUser})
+    .then(d=>renderEntryList(d.entries||[],'r1c','r1n','r1d','r1list',false))
+    .catch(()=>{ document.getElementById('r1list').innerHTML=`<div style="color:var(--red);padding:12px;">Could not load entries. Tap refresh to retry.</div>`; });
+}
+
+async function loadReport2(){
+  ['r2c','r2n','r2d'].forEach(id=>document.getElementById(id).textContent='…');
+  document.getElementById('r2list').innerHTML=`<div class="lrow"><span class="sp d"></span> Loading…</div>`;
+  try{
+    const [udata,edata]=await Promise.all([
+      api({action:'getUserList'}),
+      api({action:'getAllEntries',logged_by:'ALL'})
+    ]);
+    const sel=document.getElementById('r2sel');
+    const cur=sel.value;
+    sel.innerHTML='<option value="ALL">— All users —</option>';
+    (udata.users||[]).forEach(u=>{
+      const o=document.createElement('option');
+      o.value=u.userid; o.textContent=u.name+' ('+u.userid+')';
+      sel.appendChild(o);
+    });
+    sel.value=cur||'ALL';
+    r2AllEntries=edata.entries||[];
+    renderR2(sel.value);
+  }catch(e){
+    document.getElementById('r2list').innerHTML=`<div style="color:var(--red);padding:12px;">Could not load entries. Tap refresh to retry.</div>`;
+  }
+}
+
+function onR2UserChange(){ renderR2(document.getElementById('r2sel').value); }
+
+function renderR2(userid){
+  const filtered = userid==='ALL'
+    ? r2AllEntries
+    : r2AllEntries.filter(e=>e.userid.toLowerCase()===userid.toLowerCase());
+  renderEntryList(filtered,'r2c','r2n','r2d','r2list',true);
+}
+
+function loadReport3(){
+  document.getElementById('r3content').innerHTML=`<div class="lrow"><span class="sp d"></span> Loading…</div>`;
+  api({action:'getSummary'})
+    .then(renderSummary)
+    .catch(()=>{ document.getElementById('r3content').innerHTML=`<div style="color:var(--red);padding:12px;">Could not load the summary. Tap refresh to retry.</div>`; });
+}
+
+function renderSummary(data){
+  const rows=data.summary||[], grand=data.grand||{};
+  if(!rows.length){
+    document.getElementById('r3content').innerHTML=`<div class="empty">📭<br>Nothing recorded yet</div>`;
+    return;
+  }
+  document.getElementById('r3content').innerHTML=`
+    <div class="rsummary">
+      <div class="sbox"><div class="sval">${grand.count||0}</div><div class="slbl">Total</div></div>
+      <div class="sbox"><div class="sval">${grand.normal_count||0}</div><div class="slbl">Normal</div></div>
+      <div class="sbox"><div class="sval">${grand.dup_count||0}</div><div class="slbl">Dup slips</div></div>
+    </div>
+    <div class="sum-table">
+      <div class="sum-head">
+        <span>User</span>
+        <span style="text-align:center;">Total</span>
+        <span style="text-align:center;">Normal</span>
+        <span style="text-align:center;">Dup</span>
+      </div>
+      ${rows.map(r=>`
+        <div class="sum-row">
+          <div class="sc1"><div>${esc(r.name)}</div><div style="font-size:10px;color:var(--muted);font-family:var(--mono);">${esc(r.userid)}</div></div>
+          <div class="sc2 hi">${r.count}</div>
+          <div class="sc2">${r.normal_count}</div>
+          <div class="sc2">${r.dup_count}</div>
+        </div>`).join('')}
+      <div class="sum-row grand">
+        <div class="sc1">Grand total</div>
+        <div class="sc2 hi">${grand.count}</div>
+        <div class="sc2">${grand.normal_count}</div>
+        <div class="sc2">${grand.dup_count}</div>
+      </div>
+    </div>`;
+}
+
+function renderEntryList(entries,cId,nId,dId,listId,showUser){
+  const cnt = entries.length;
+  const dup = entries.filter(e=>e.remark==='Duplicate Slip').length;
+  document.getElementById(cId).textContent=cnt;
+  document.getElementById(nId).textContent=cnt-dup;
+  document.getElementById(dId).textContent=dup;
+
+  if(!cnt){
+    document.getElementById(listId).innerHTML=`<div class="empty">📭<br><span style="font-size:13px;">Nothing recorded yet</span></div>`;
+    return;
+  }
+
+  document.getElementById(listId).innerHTML=entries.slice().reverse().map(e=>{
+    const isDupSlip = e.remark==='Duplicate Slip';
+    const uTag    = showUser?`<span class="etag u">👤 ${esc(e.userid)}</span>`:'';
+    const editBtn = showUser?`<button onclick="openEditModal(${JSON.stringify(e).replace(/"/g,'&quot;')})" style="background:var(--navy);border:none;color:#fff;font-size:11px;font-weight:600;padding:4px 10px;border-radius:7px;cursor:pointer;font-family:var(--sans);flex-shrink:0;">Edit</button>`:'';
+    const dupTag  = isDupSlip?`<span class="etag dup">🔖 Duplicate</span>`:'';
+    return `<div class="ecard${isDupSlip?' dup':''}">
+      <div class="ech">
+        <div style="display:flex;align-items:center;gap:5px;">
+          <span class="eid">#${e.entry_id}</span>${dupTag}
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="eotp">${e.otp?'OTP '+esc(e.otp):''}</span>${editBtn}
+        </div>
+      </div>
+      <div class="emid">${esc(e.member_id)}</div>
+      <div class="ename">${esc(e.member_name||'')}</div>
+      <div class="emeta">
+        <span class="etag ${e.entry_method==='qrcode'?'qr':'man'}">${e.entry_method==='qrcode'?'📷 QR':'✏️ Manual'}</span>
+        ${uTag}
+        <span class="etag">${fmtTs(e.created_on)}</span>
+        ${e.changed_on?`<span class="etag" style="background:#fff3cd;color:#856404;">Edited ${fmtTs(e.changed_on)} by ${esc(e.changedby||'')}</span>`:''}
+      </div>
+      ${e.comment?`<div class="ecmt">💬 ${esc(e.comment)}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════════
+//  HELPERS
+// ════════════════════════════════════════════════════
+function showToast(msg,type='',duration=3200){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast '+type+' show';
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),duration);
+}
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmtTs(ts){
+  if(!ts) return '';
+  try{ return new Date(ts).toLocaleDateString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}); }
+  catch(e){ return ts; }
+}
+
+// ════════════════════════════════════════════════════
+//  EDIT MODAL — admin
+// ════════════════════════════════════════════════════
+let editEntry=null, editMethod='qrcode', editUserList=[];
+
+function openEditModal(entry){
+  editEntry=entry;
+  editMethod=entry.entry_method||'qrcode';
+  document.getElementById('medit-eid').textContent='#'+entry.entry_id;
+  document.getElementById('medit-mid').textContent=entry.member_id;
+  document.getElementById('medit-name').value=entry.member_name||'';
+  document.getElementById('medit-otp').value=entry.otp||'';
+  document.getElementById('medit-remark').value=entry.remark==='Duplicate Slip'?'Duplicate Slip':'';
+  document.getElementById('medit-comment').value=entry.comment||'';
+  setModalMethod(editMethod);
+  populateEditUserDropdown(entry.userid);
+  document.getElementById('edit-modal-overlay').classList.remove('h');
+}
+
+function closeEditModal(e){
+  if(e && e.target && e.target.id!=='edit-modal-overlay') return;
+  document.getElementById('edit-modal-overlay').classList.add('h');
+  editEntry=null;
+}
+
+function setModalMethod(m){
+  editMethod=m;
+  document.getElementById('medit-qr').classList.toggle('sel',  m==='qrcode');
+  document.getElementById('medit-man').classList.toggle('sel', m==='manual');
+}
+
+async function populateEditUserDropdown(currentUserid){
+  const sel=document.getElementById('medit-user');
+  if(!editUserList.length){
+    try{ editUserList=(await api({action:'getUserList'})).users||[]; }
+    catch(e){ editUserList=[]; }
+  }
+  sel.innerHTML='';
+  const list = editUserList.length ? editUserList : [{userid:currentUserid,name:currentUserid}];
+  list.forEach(u=>{
+    const o=document.createElement('option');
+    o.value=u.userid; o.textContent=u.name+' ('+u.userid+')';
+    sel.appendChild(o);
+  });
+  sel.value=currentUserid;
+}
+
+async function saveEdit(){
+  if(!editEntry) return;
+  const btn=document.getElementById('medit-save');
+  btn.disabled=true; btn.innerHTML='<span class="sp"></span>Saving…';
+  try{
+    const d=await api({
+      action:'updateEntry',
+      entry_id:editEntry.entry_id,
+      member_id:editEntry.member_id,
+      entry_method:editMethod,
+      userid:document.getElementById('medit-user').value,
+      remark:document.getElementById('medit-remark').value,
+      comment:document.getElementById('medit-comment').value.trim(),
+      changedby:cUser,
+    });
+    if(d.success){
+      showToast('Entry #'+editEntry.entry_id+' updated','success');
+      closeEditModal();
+      loadReport2();
+    } else {
+      showToast(d.error||'Could not save changes','error');
+    }
+  }catch(e){
+    showToast('Network error — try again','error');
+  }
+  btn.disabled=false; btn.innerHTML='Save changes';
+}
+
+// ════════════════════════════════════════════════════
+//  PRINTING — ESC/POS over Web Bluetooth (58mm)
+// ════════════════════════════════════════════════════
+let btDevice=null, btCharacteristic=null, pendingPrintData=null;
+
+function showPrintDialog(entryData){
+  pendingPrintData=entryData;
+  const dt = fmtFull(entryData.timestamp);
+  document.getElementById('print-preview').innerHTML =
+    `<strong>Entry ID :</strong> ${esc(String(entryData.entry_id))}<br>
+     <strong>Member ID:</strong> ${esc(entryData.member_id)}<br>
+     <strong>Name     :</strong> ${esc(entryData.name)}<br>
+     <strong>OTP      :</strong> ${esc(entryData.otp||'—')}<br>
+     ${entryData.remark?`<strong>Type     :</strong> ${esc(entryData.remark)}<br>`:''}
+     <strong>By       :</strong> ${esc(entryData.username||entryData.userid)}<br>
+     <strong>Date/Time:</strong> ${dt}`;
+  document.getElementById('print-status').textContent='';
+  document.getElementById('print-dialog').classList.remove('h');
+}
+
+function closePrintDialog(){
+  document.getElementById('print-dialog').classList.add('h');
+  pendingPrintData=null;
+}
+
+function fmtFull(ts){
+  const d = ts ? new Date(ts) : new Date();
+  return d.toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:true});
+}
+
+function buildEscPos(data){
+  const name   = String(data.name||'');
+  const otp    = String(data.otp||'');
+  const remark = String(data.remark||'');
+  const comment= String(data.comment||'');
+  const userid = String(data.userid||cUser||'');
+  const username=String(data.username||cName||userid);
+
+  let txt='';
+  txt += 'SZVS JAIN SAMAJ\n';
+  txt += 'Shesh Distribution\n';
+  txt += '--------------------------------\n';
+  txt += 'Entry ID  : ' + String(data.entry_id||'') + '\n';
+  txt += 'Member ID : ' + String(data.member_id||'') + '\n';
+  if(name.length<=22){
+    txt += 'Name      : ' + name + '\n';
+  } else {
+    txt += 'Name      : ' + name.substring(0,22) + '\n';
+    txt += '            ' + name.substring(22)   + '\n';
+  }
+  if(data.mobile) txt += 'Mobile    : ' + data.mobile + '\n';
+  if(otp)         txt += 'OTP       : ' + otp + '\n';
+  if(remark)      txt += 'Type      : ' + remark + '\n';
+  if(comment)     txt += 'Comment   : ' + comment + '\n';
+  txt += '--------------------------------\n';
+  txt += 'Issued By : ' + username + ' (' + userid + ')\n';
+  txt += 'Date/Time : ' + fmtFull(data.timestamp) + '\n';
+  txt += '--------------------------------\n';
+  txt += '    Sign / Stamp\n';
+  txt += '--------------------------------\n';
+  txt += '\n\n\n\n\n';
+
+  const tBytes = Array.from(new TextEncoder().encode(txt));
+  return new Uint8Array([0x1B,0x40, ...tBytes, 0x1D,0x56,0x41,0x10]);
+}
+
+async function doPrint(){
+  const statusEl=document.getElementById('print-status');
+  const btn=document.querySelector('.btn-print-yes');
+  if(!pendingPrintData){ closePrintDialog(); return; }
+
+  if(!navigator.bluetooth){
+    statusEl.textContent='Bluetooth is not available in this browser. Use Chrome.';
+    return;
+  }
+
+  btn.disabled=true; btn.innerHTML='<span class="sp"></span>Connecting…';
+  statusEl.textContent='Searching for the printer…';
+
+  try{
+    if(!btCharacteristic){
+      btDevice = await navigator.bluetooth.requestDevice({
+        filters:[{ namePrefix:'HQ300' }],
+        optionalServices:[
+          '000018f0-0000-1000-8000-00805f9b34fb',
+          '00001101-0000-1000-8000-00805f9b34fb',
+          'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
+          '49535343-fe7d-4ae5-8fa9-9fafd205e455',
+        ],
+      });
+
+      statusEl.textContent='Connecting to '+btDevice.name+'…';
+      const server=await btDevice.gatt.connect();
+
+      let service=null;
+      for(const uuid of [
+        'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
+        '49535343-fe7d-4ae5-8fa9-9fafd205e455',
+        '000018f0-0000-1000-8000-00805f9b34fb',
+      ]){
+        try{ service=await server.getPrimaryService(uuid); break; }catch(e){}
+      }
+      if(!service){
+        const services=await server.getPrimaryServices();
+        if(services.length) service=services[0];
+      }
+      if(!service) throw new Error('This printer exposes no compatible service');
+
+      const chars=await service.getCharacteristics();
+      btCharacteristic=null;
+      for(const c of chars){
+        if(c.properties.write || c.properties.writeWithoutResponse){ btCharacteristic=c; break; }
+      }
+      if(!btCharacteristic) throw new Error('This printer has no writable channel');
+    }
+
+    statusEl.textContent='Printing…';
+    const printData=buildEscPos(pendingPrintData);
+    const CHUNK=20;
+    for(let i=0;i<printData.length;i+=CHUNK){
+      const chunk=printData.slice(i,i+CHUNK);
+      try{
+        if(btCharacteristic.properties.writeWithoutResponse) await btCharacteristic.writeValueWithoutResponse(chunk);
+        else                                                 await btCharacteristic.writeValue(chunk);
+      }catch(writeErr){ console.warn('Chunk write error at byte',i,writeErr); }
+      await new Promise(r=>setTimeout(r,100));
+    }
+
+    statusEl.textContent='Printed';
+    setTimeout(closePrintDialog,1200);
+
+  }catch(err){
+    console.error('Print error:', err);
+    btCharacteristic=null;
+    statusEl.textContent = err.name==='NotFoundError'
+      ? 'No printer was selected.'
+      : err.message;
+  }
+
+  btn.disabled=false; btn.innerHTML='🖨️ Print';
+}
+
+// ════════════════════════════════════════════════════
+//  CAMERA SCANNER
+// ════════════════════════════════════════════════════
+let camStream=null, camActive=false, camTarget=null, camAnimFrame=null, _barcodeDetector=null;
+
+async function openCamera(target){
+  camTarget=target;
+  document.getElementById('cam-overlay').classList.remove('h');
+  document.getElementById('cam-status').textContent='Starting camera…';
+  document.getElementById('cam-status').className='cam-status';
+
+  try{
+    camStream=await navigator.mediaDevices.getUserMedia({
+      video:{ facingMode:'environment', width:{ideal:640}, height:{ideal:640} }
+    });
+    const video=document.getElementById('cam-video');
+    video.srcObject=camStream;
+    await video.play();
+    camActive=true;
+    document.getElementById('cam-status').textContent='Point the camera at the QR code';
+    camScanLoop();
+  }catch(err){
+    console.error('Camera error:', err);
+    document.getElementById('cam-status').textContent = err.name==='NotAllowedError'
+      ? 'Camera access is blocked. Allow it in your browser settings.'
+      : 'Camera unavailable: '+err.message;
+    document.getElementById('cam-status').className='cam-status err';
+  }
+}
+
+function closeCamera(){
+  camActive=false;
+  if(camAnimFrame) cancelAnimationFrame(camAnimFrame);
+  if(camStream){ camStream.getTracks().forEach(t=>t.stop()); camStream=null; }
+  document.getElementById('cam-video').srcObject=null;
+  document.getElementById('cam-overlay').classList.add('h');
+  camTarget=null;
+}
+
+function getBarcodeDetector(){
+  if(_barcodeDetector) return _barcodeDetector;
+  if(!('BarcodeDetector' in window)) return null;
+  _barcodeDetector=new BarcodeDetector({ formats:['qr_code','code_128','code_39','ean_13','ean_8','upc_a'] });
+  return _barcodeDetector;
+}
+
+function camScanLoop(){
+  if(!camActive) return;
+  const video=document.getElementById('cam-video');
+  const bd=getBarcodeDetector();
+
+  if(!bd){
+    document.getElementById('cam-status').textContent='Camera scanning is not supported here. Use the scanner or type the ID.';
+    document.getElementById('cam-status').className='cam-status err';
+    return;
+  }
+  if(video.readyState<video.HAVE_ENOUGH_DATA){
+    camAnimFrame=requestAnimationFrame(camScanLoop);
+    return;
+  }
+
+  bd.detect(video)
+    .then(barcodes=>{
+      if(!camActive) return;
+      if(barcodes.length) onCodeDetected(barcodes[0].rawValue);
+      else camAnimFrame=requestAnimationFrame(camScanLoop);
+    })
+    .catch(err=>{
+      if(!camActive) return;
+      console.warn('BarcodeDetector frame error:', err);
+      camAnimFrame=requestAnimationFrame(camScanLoop);
+    });
+}
+
+function onCodeDetected(raw){
+  if(!camActive) return;
+  camActive=false;
+
+  const target   = camTarget;   // saved before closeCamera clears it
+  const memberId = decodeQR(raw);
+
+  document.getElementById('cam-status').textContent='Found '+memberId;
+  document.getElementById('cam-status').className='cam-status found';
+
+  setTimeout(()=>{
+    closeCamera();
+
+    if(target==='entry'){
+      const mi=document.getElementById('mi');
+      mi.value=memberId; mi.className='scan-input';
+      scanMode=true;
+      setMethod('qrcode');
+      showToast('Scanned '+memberId,'success');
+      lookupMember(memberId);
+
+    } else if(target==='dup'){
+      setDupTab('id');
+      const dmi=document.getElementById('dup-mi');
+      dmi.value=memberId; dmi.className='scan-input';
+      dupScanMode=true;
+      dupMethod='qrcode'; dupRenderMethod();
+      showToast('Scanned '+memberId,'success');
+      dupLookupMember(memberId);
+
+    } else {
+      showToast('Scan target lost. Try again.','error');
+    }
+  }, 700);
+}
+
+// ════════════════════════════════════════════════════
+//  START
+// ════════════════════════════════════════════════════
+(function init(){
+  showVersion();
+  const u=sessionStorage.getItem('lu');
+  const p=sessionStorage.getItem('lp');
+  if(u && p) autoLogin(u,p);
+  else {
+    showPage('login');
+    setTimeout(()=>document.getElementById('lu').focus(),100);
+  }
+})();
+
+</script>
+</body>
+</html>
