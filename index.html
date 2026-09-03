@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>SZVS Jain Samaj - Shesh Distribution</title>
-<meta name="app-version" content="20260903-0300">
+<meta name="app-version" content="20260903-0400">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ── VARIABLES ── */
@@ -121,7 +121,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 
 /* ── METHOD TOGGLE ── */
 .method-toggle{display:flex;align-items:center;background:var(--bg);border-radius:9px;padding:3px;margin-top:2px;border:1px solid var(--border);position:relative;}
-.mt-opt{flex:1;text-align:center;padding:8px 4px;font-size:11px;font-weight:700;border-radius:7px;cursor:pointer;transition:all 0.2s;color:var(--muted);z-index:1;position:relative;line-height:1.3;user-select:none;}
+.mt-opt{flex:1;text-align:center;padding:7px 4px;white-space:nowrap;font-size:11px;font-weight:700;border-radius:7px;cursor:pointer;transition:all 0.2s;color:var(--muted);z-index:1;position:relative;line-height:1.3;user-select:none;}
 .mt-opt.active{color:#fff;}
 .mt-pill{position:absolute;top:3px;bottom:3px;width:calc(50% - 3px);border-radius:7px;transition:all 0.2s cubic-bezier(0.34,1.3,0.64,1);z-index:0;}
 .mt-pill.qr    {left:3px;background:var(--green);box-shadow:0 2px 8px rgba(0,201,122,0.3);}
@@ -409,6 +409,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 
 /* Method card now sits alone, full width */
 .method-card{width:100%;}
+.c.compact{padding:6px 8px;}
 
 /* ── COMMENT FIELD ── */
 .comment-input{
@@ -496,17 +497,6 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 
   <div class="entry-body">
 
-    <!-- Last Entry Strip -->
-    <div class="last-entry" id="last-entry">
-      <div class="le-label">Saved</div>
-      <div class="le-row">
-        <span class="le-id"   id="le-id"></span>
-        <span class="le-mid"  id="le-mid"></span>
-        <span class="le-name" id="le-name"></span>
-        <span class="le-otp"  id="le-otp"></span>
-      </div>
-    </div>
-
     <!-- Member ID -->
     <div class="c">
       <label class="clabel">Member ID — scan or type, then press Enter</label>
@@ -523,25 +513,34 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
     </div>
 
     <!-- Entry method -->
-    <div class="c method-card">
-      <label class="clabel">Entry method</label>
+    <div class="c method-card compact">
       <div class="method-toggle" onclick="toggleMethod()">
         <div class="mt-pill qr" id="mpill"></div>
-        <div class="mt-opt active" id="mopt-qr">📷 QR<br>Scan</div>
-        <div class="mt-opt"       id="mopt-man">✏️ Manual<br>Entry</div>
+        <div class="mt-opt active" id="mopt-qr">📷 QR Scan</div>
+        <div class="mt-opt"       id="mopt-man">✏️ Manual</div>
       </div>
     </div>
 
     <!-- Comment -->
-    <div class="c">
-      <label class="clabel">Comment (optional)</label>
+    <div class="c compact">
       <input type="text" id="entry-comment" class="comment-input"
-             placeholder="Add a note if needed…"
+             placeholder="Comment (optional)"
              autocomplete="off" spellcheck="false">
     </div>
 
     <!-- Submit -->
     <button class="btn-submit" id="bsub" onclick="doSubmit()">Save entry</button>
+
+    <!-- Last Entry Strip -->
+    <div class="last-entry" id="last-entry">
+      <div class="le-label">Saved</div>
+      <div class="le-row">
+        <span class="le-id"   id="le-id"></span>
+        <span class="le-mid"  id="le-mid"></span>
+        <span class="le-name" id="le-name"></span>
+        <span class="le-otp"  id="le-otp"></span>
+      </div>
+    </div>
 
   </div>
 
@@ -559,17 +558,6 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
   </div>
 
   <div class="entry-body">
-
-    <!-- Last entry strip -->
-    <div class="last-entry" id="dup-last-entry">
-      <div class="le-label">Saved</div>
-      <div class="le-row">
-        <span class="le-id"   id="dup-le-id"></span>
-        <span class="le-mid"  id="dup-le-mid"></span>
-        <span class="le-name" id="dup-le-name"></span>
-        <span class="le-otp"  id="dup-le-otp"></span>
-      </div>
-    </div>
 
     <!-- Search tabs -->
     <div class="dup-search-tabs">
@@ -604,20 +592,18 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
     <div class="mresult" id="dup-mr"></div>
 
     <!-- Entry method -->
-    <div class="c method-card">
-      <label class="clabel">Entry method</label>
+    <div class="c method-card compact">
       <div class="method-toggle" onclick="dupToggleMethod()">
         <div class="mt-pill qr" id="dup-mpill"></div>
-        <div class="mt-opt active" id="dup-mopt-qr">📷 QR<br>Scan</div>
-        <div class="mt-opt"       id="dup-mopt-man">✏️ Manual<br>Entry</div>
+        <div class="mt-opt active" id="dup-mopt-qr">📷 QR Scan</div>
+        <div class="mt-opt"       id="dup-mopt-man">✏️ Manual</div>
       </div>
     </div>
 
     <!-- Comment -->
-    <div class="c">
-      <label class="clabel">Comment (optional)</label>
+    <div class="c compact">
       <input type="text" id="dup-comment" class="comment-input"
-             placeholder="Why is a duplicate slip needed?"
+             placeholder="Comment — why a duplicate slip?"
              autocomplete="off" spellcheck="false">
     </div>
 
@@ -626,6 +612,17 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
       style="background:var(--purple);box-shadow:0 4px 14px rgba(124,58,237,0.35);">
       Save duplicate slip
     </button>
+
+    <!-- Last entry strip -->
+    <div class="last-entry" id="dup-last-entry">
+      <div class="le-label">Saved</div>
+      <div class="le-row">
+        <span class="le-id"   id="dup-le-id"></span>
+        <span class="le-mid"  id="dup-le-mid"></span>
+        <span class="le-name" id="dup-le-name"></span>
+        <span class="le-otp"  id="dup-le-otp"></span>
+      </div>
+    </div>
 
   </div>
 </div>
