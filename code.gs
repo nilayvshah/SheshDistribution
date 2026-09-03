@@ -25,6 +25,7 @@ const USERS_SHEET   = 'user_master';
 // ── user_master columns (0-based) ──
 // A=0 userid | B=1 password | C=2 name | D=3 range_start
 // E=4 range_end | F=5 active | G=6 is_admin | H=7 print_required
+// I=8 dup_access
 
 // ── transaction_data columns (1-based, compact layout) ──
 // A=1 entry_id    | B=2 member_id | C=3 member_name
@@ -94,8 +95,7 @@ function loginUser(userid, password) {
   }
   if (!userRow) return { success: false, error: 'User not found' };
 
-  // print_required: blank or YES  → show print dialog
-  //                 NO           → skip it
+  // print_required: blank or YES → show print dialog, NO → skip it
   const printFlag = String(userRow[7] || '').trim().toUpperCase();
 
   return {
@@ -106,7 +106,30 @@ function loginUser(userid, password) {
     range_end:      Number(userRow[4]),
     is_admin:       String(userRow[6] || '').trim().toUpperCase() === 'YES',
     print_required: printFlag !== 'NO',
+    dup_access:     hasDupAccess(userRow),
   };
+}
+
+// ════════════════════════════════════════════════════════
+//  Duplicate slip access
+//  Column I of user_master. Explicit grant: only YES
+//  allows it, blank or anything else denies. Admin status
+//  does not override this — set it per user.
+// ════════════════════════════════════════════════════════
+function hasDupAccess(userRow) {
+  return String(userRow[8] || '').trim().toUpperCase() === 'YES';
+}
+
+function findUserRow(userid) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(USERS_SHEET);
+  if (!sheet) return null;
+  const rows = sheet.getDataRange().getValues();
+  const target = String(userid).trim().toLowerCase();
+  for (let i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]).trim().toLowerCase() === target) return rows[i];
+  }
+  return null;
 }
 
 // ════════════════════════════════════════════════════════
@@ -194,6 +217,15 @@ function addEntry(p) {
 
   const isDupSlip = String(p.remark || '').trim() === DUP_REMARK;
   const memberId  = String(p.memberid).trim().toUpperCase();
+
+  // Duplicate slips need explicit permission. Checked here
+  // and not only in the browser, since the endpoint can be
+  // called directly.
+  if (isDupSlip) {
+    const userRow = findUserRow(p.logged_by);
+    if (!userRow || !hasDupAccess(userRow))
+      return { success: false, error: 'You do not have access to issue duplicate slips' };
+  }
 
   const lock = LockService.getScriptLock();
   try {

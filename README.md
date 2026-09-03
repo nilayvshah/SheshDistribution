@@ -38,13 +38,14 @@ at the top of `code.gs`; rename a tab and you must edit those lines.
 
 ### `user_master`
 
-| A | B | C | D | E | F | G | H |
-|---|---|---|---|---|---|---|---|
-| userid | password | name | range_start | range_end | active | Is_Admin | **print_required** |
+| A | B | C | D | E | F | G | H | I |
+|---|---|---|---|---|---|---|---|---|
+| userid | password | name | range_start | range_end | active | Is_Admin | **print_required** | **dup_access** |
 
 - `active` — `NO` disables the login
 - `Is_Admin` — `YES` unlocks the All Entries and Summary reports and the edit modal
 - `print_required` — `NO` skips the print dialog after saving. Blank or `YES` shows it.
+- `dup_access` — `YES` shows the Duplicate Slip page. Blank or anything else hides it. This is an explicit grant and admin status does **not** override it, so set it per user including for admins.
 - `range_start` / `range_end` — the entry ID block for this desk
 
 ### `transaction_data`

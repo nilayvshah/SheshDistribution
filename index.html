@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>SZVS Jain Samaj - Shesh Distribution</title>
-<meta name="app-version" content="20260903-0400">
+<meta name="app-version" content="20260903-0500">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ── VARIABLES ── */
@@ -821,7 +821,7 @@ function decodeQR(input) {
 //  STATE
 // ════════════════════════════════════════════════════
 let cUser=null, cName=null, rStart=null, rEnd=null;
-let isAdmin=false, printRequired=true;
+let isAdmin=false, printRequired=true, dupAccess=false;
 let mmap={};
 let found=null, isDup=false, dupInfo=null;
 let method='qrcode', scanMode=true, lastKT=0;
@@ -836,6 +836,7 @@ function applyLogin(d){
   rStart=d.range_start; rEnd=d.range_end;
   isAdmin=!!d.is_admin;
   printRequired=d.print_required!==false;
+  dupAccess=!!d.dup_access;
 }
 
 function cacheMembers(m){
@@ -916,7 +917,7 @@ function showVersion(){
 
 function doLogout(){
   sessionStorage.clear();
-  mmap={}; cUser=cName=null; isAdmin=false; printRequired=true;
+  mmap={}; cUser=cName=null; isAdmin=false; printRequired=true; dupAccess=false;
   document.getElementById('lu').value='';
   document.getElementById('lp').value='';
   document.getElementById('lerr').textContent='';
@@ -933,7 +934,10 @@ function showPage(id){
   window.scrollTo(0,0);
 }
 function goEntry()  { showPage('entry');  focusMI(); }
-function goDupSlip(){ showPage('dupslip'); resetDupSlip(); }
+function goDupSlip(){
+  if(!dupAccess){ showToast('You do not have access to duplicate slips','error'); return; }
+  showPage('dupslip'); resetDupSlip();
+}
 function goReport1(){ showPage('report1'); loadReport1(); }
 function goReport2(){ if(!isAdmin){showToast('Admin access required','error');return;} showPage('report2'); loadReport2(); }
 function goReport3(){ if(!isAdmin){showToast('Admin access required','error');return;} showPage('report3'); loadReport3(); }
@@ -944,17 +948,19 @@ function goReport3(){ if(!isAdmin){showToast('Admin access required','error');re
 function initEntry(){
   document.getElementById('ulab').textContent='👤 '+(cName||cUser);
   document.getElementById('admin-badge').style.display=isAdmin?'inline-block':'none';
-  document.getElementById('topbar-btns').innerHTML = isAdmin
-    ? `<button class="tbtn" onclick="goReport1()">📋 My</button>
-       <button class="tbtn admin" onclick="goReport2()">👥 All</button>
-       <button class="tbtn admin" onclick="goReport3()">📊 Summary</button>
-       <button class="tbtn" style="background:rgba(124,58,237,0.25);color:#c4b5fd;" onclick="goDupSlip()">🔖 Dup</button>
-       <button class="tbtn" onclick="doLogout()">Exit</button>
-       <button class="tbtn" onclick="hardRefresh()" title="Reload latest version" style="font-size:14px;padding:5px 8px;">↺</button>`
-    : `<button class="tbtn" onclick="goReport1()">📊 Report</button>
-       <button class="tbtn" style="background:rgba(124,58,237,0.25);color:#c4b5fd;" onclick="goDupSlip()">🔖 Dup</button>
-       <button class="tbtn" onclick="doLogout()">Exit</button>
-       <button class="tbtn" onclick="hardRefresh()" title="Reload latest version" style="font-size:14px;padding:5px 8px;">↺</button>`;
+  const btns = [];
+  if(isAdmin){
+    btns.push(`<button class="tbtn" onclick="goReport1()">📋 My</button>`);
+    btns.push(`<button class="tbtn admin" onclick="goReport2()">👥 All</button>`);
+    btns.push(`<button class="tbtn admin" onclick="goReport3()">📊 Summary</button>`);
+  } else {
+    btns.push(`<button class="tbtn" onclick="goReport1()">📊 Report</button>`);
+  }
+  if(dupAccess)
+    btns.push(`<button class="tbtn" style="background:rgba(124,58,237,0.25);color:#c4b5fd;" onclick="goDupSlip()">🔖 Dup</button>`);
+  btns.push(`<button class="tbtn" onclick="doLogout()">Exit</button>`);
+  btns.push(`<button class="tbtn" onclick="hardRefresh()" title="Reload latest version" style="font-size:14px;padding:5px 8px;">↺</button>`);
+  document.getElementById('topbar-btns').innerHTML = btns.join('\n');
   resetForm();
 }
 
